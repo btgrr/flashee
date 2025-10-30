@@ -14,6 +14,11 @@
 #define BTN_PIN_1 20 // restart read write op
 #define BTN_PIN_2 21 // detect
 
+// #define PICO_DEFAULT_SPI_RX_PIN 0
+// #define PICO_DEFAULT_SPI_SCK_PIN 2
+// #define PICO_DEFAULT_SPI_TX_PIN 3
+// #define PICO_DEFAULT_SPI_CSN_PIN 1
+
 #include "flash.h"
 
 typedef struct chip_actions {
@@ -43,25 +48,6 @@ void irq_callback(uint gpio, uint32_t event_mask) {
             actions.chipDetect = 1;
         }
     }
-    
-    // switch (gpio) {
-    //     case BTN_PIN_1: {
-    //         // read
-    //         if (event_mask & GPIO_IRQ_EDGE_FALL) {
-    //             printf("detecting chip 20\n");
-    //             // actions.chipRead = 1;
-    //         }
-    //     }
-    //     case BTN_PIN_2: {
-    //         // detect
-    //         if (event_mask & GPIO_IRQ_EDGE_FALL) {
-    //             printf("detecting chip 21\n");
-    //             // actions.chipDetect = 1;
-    //         }
-    //     }
-    //     default:
-    //     break;
-    // }
 }
 
 int main()
@@ -106,7 +92,7 @@ int main()
     // select the target device
     gpio_init(PICO_DEFAULT_SPI_CSN_PIN);
     gpio_set_dir(PICO_DEFAULT_SPI_CSN_PIN, GPIO_OUT); 
-    gpio_put(PICO_DEFAULT_SPI_CSN_PIN, 1); // actively select the pin
+    gpio_put(PICO_DEFAULT_SPI_CSN_PIN, 1);
 
     uint offset = pio_add_program(spi.pio, &spi_cpha0_program);
     printf("Loaded program at %d\n", offset);
@@ -154,11 +140,4 @@ int main()
         }
         sleep_ms(10);
     }
-
-    
-
-    // while (true) {
-    //     printf("Hello, world!\n");
-    //     sleep_ms(1000);
-    // }
 }
