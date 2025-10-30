@@ -3,9 +3,9 @@
 void flash_read(const pio_spi_inst_t *spi, uint32_t addr, uint8_t *buf, size_t len) {
     uint8_t cmd[4] = {
             FLASH_CMD_READ,
-            addr >> 16,
-            addr >> 8,
-            addr
+            (addr >> 16) & 0xFF,
+            (addr >> 8) & 0xFF,
+            addr & 0xFF
     };
     gpio_put(spi->cs_pin, 0);
     pio_spi_write8_blocking(spi, cmd, 4);
@@ -96,9 +96,9 @@ void flash_page_program(const pio_spi_inst_t *spi, uint32_t addr, uint8_t data[]
     flash_write_enable(spi);
     uint8_t cmd[4] = {
             FLASH_CMD_PAGE_PROGRAM,
-            addr >> 16,
-            addr >> 8,
-            addr
+            (addr >> 16) & 0xFF,
+            (addr >> 8) & 0xFF,
+            addr & 0xFF
     };
     gpio_put(spi->cs_pin, 0);
     pio_spi_write8_blocking(spi, cmd, 4);
