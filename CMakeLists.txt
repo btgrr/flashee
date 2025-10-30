@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(flashee main.c flash.c pio_spi.c)
+add_executable(flashee main.c)
 
 pico_set_program_name(flashee "flashee")
 pico_set_program_version(flashee "0.1")
@@ -60,5 +60,3 @@ target_link_libraries(flashee
         )
 
 pico_add_extra_outputs(flashee)
-
-pico_generate_pio_header(flashee ${CMAKE_CURRENT_LIST_DIR}/spi.pio)
